@@ -1,6 +1,7 @@
 class Parser
-  def initialize(file_path:)
+  def initialize(file_path:, mode:)
     @file_path = file_path
+    @mode = mode
   end
 
   def call
@@ -20,9 +21,9 @@ class Parser
     visits
   end
 
-  def count(unique: false)
+  def count
     fetch_visits.each_with_object({}) do |(path, ips_array), views|
-      if unique
+      if @mode == :unique
         views[path] = ips_array.uniq.size
       else
         views[path] = ips_array.size
@@ -30,20 +31,13 @@ class Parser
     end
   end
 
-  def sort(unique: false)
-    count(unique: unique).sort_by { |_path, view_count| -view_count }
+  def sort
+    count.sort_by { |_path, view_count| -view_count }
   end
 
   def print
-    p "================ SORTED =================="
     sort.each do |path, view_count|
-      p "#{path} #{view_count} visits"
-    end
-
-    p "================ UNIQUE =================="
-
-    sort(unique: true).each do |path, view_count|
-      p "#{path} #{view_count} unique visits"
+      puts "#{path} #{view_count} visits"
     end
   end
 end
