@@ -1,11 +1,19 @@
 class Parser
+  MODES = {
+    total: ->(array) { array.size },
+    unique: ->(array) { array.uniq.size }
+  }.freeze
+
   def initialize(file_path:, mode:)
     @file_path = file_path
     @mode = mode
   end
 
   def call
-    print
+    fetch_visits.
+      then { |visits| count_visits(visits: visits) }.
+      then { |visits| sort_visits(visits: visits) }.
+      then { |visits| display_visits(visits: visits) }
   end
 
   private
@@ -21,22 +29,18 @@ class Parser
     visits
   end
 
-  def count
-    fetch_visits.each_with_object({}) do |(path, ips_array), views|
-      if @mode == :unique
-        views[path] = ips_array.uniq.size
-      else
-        views[path] = ips_array.size
-      end
+  def count_visits(visits:)
+    visits.map do |path, ips_array|
+      [path, MODES[@mode].call(ips_array)]
     end
   end
 
-  def sort
-    count.sort_by { |_path, view_count| -view_count }
+  def sort_visits(visits:)
+    visits.sort_by { |_path, view_count| -view_count }
   end
 
-  def print
-    sort.each do |path, view_count|
+  def display_visits(visits:)
+    visits.each do |path, view_count|
       puts "#{path} #{view_count} visits"
     end
   end
