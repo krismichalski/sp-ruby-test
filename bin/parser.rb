@@ -4,4 +4,7 @@
 
 require_relative '../lib/parser'
 
-Parser.new(file_path: ARGV[0]).call
+puts "TOTAL:"
+Parser.new(file_path: ARGV[0], mode: :total).call
+puts "UNIQUE:"
+Parser.new(file_path: ARGV[0], mode: :unique).call
