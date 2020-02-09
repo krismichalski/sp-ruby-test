@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "sorter/descending"
 
 RSpec.describe Sorter::Descending do
@@ -14,11 +16,9 @@ RSpec.describe Sorter::Descending do
   describe "#call" do
     it "sorts storage based on values (descending)" do
       expect(subject).to eq(
-        {
-          b: 9,
-          a: 6,
-          c: 1,
-        }
+        b: 9,
+        a: 6,
+        c: 1,
       )
     end
   end

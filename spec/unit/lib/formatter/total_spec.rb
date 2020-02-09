@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "formatter/total"
 
 RSpec.describe Formatter::Total do
@@ -17,8 +19,8 @@ RSpec.describe Formatter::Total do
         [
           "/path/2 9 visits",
           "/path/1 6 visits",
-          "/path/3 1 visits"
-        ]
+          "/path/3 1 visits",
+        ],
       )
     end
   end

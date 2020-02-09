@@ -1,13 +1,15 @@
-require_relative 'reader/file'
-require_relative 'parser/simple_log'
-require_relative 'counter/base'
-require_relative 'counter/total'
-require_relative 'counter/unique'
-require_relative 'sorter/descending'
-require_relative 'formatter/base'
-require_relative 'formatter/total'
-require_relative 'formatter/unique'
-require_relative 'writer/standard_output'
+# frozen_string_literal: true
+
+require_relative "reader/file"
+require_relative "parser/simple_log"
+require_relative "counter/base"
+require_relative "counter/total"
+require_relative "counter/unique"
+require_relative "sorter/descending"
+require_relative "formatter/base"
+require_relative "formatter/total"
+require_relative "formatter/unique"
+require_relative "writer/standard_output"
 
 class SmartPensionRubyTest
   def initialize(input_path:, input_reader: nil, parser: nil, counter: nil, sorter: nil, formatter: nil, writer: nil)
@@ -21,12 +23,12 @@ class SmartPensionRubyTest
   end
 
   def call
-    read.
-      then { |lines| parse_and_store(lines: lines) }.
-      then { |storage| count(storage: storage) }.
-      then { |storage| sort(storage: storage) }.
-      then { |storage| format(storage: storage) }.
-      then { |storage| write(storage: storage) }
+    read
+      .then { |lines| parse_and_store(lines: lines) }
+      .then { |storage| count(storage: storage) }
+      .then { |storage| sort(storage: storage) }
+      .then { |storage| format(storage: storage) }
+      .then { |storage| write(storage: storage) }
   end
 
   private

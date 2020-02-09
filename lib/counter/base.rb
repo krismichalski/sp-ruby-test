@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Counter
   class Base
     def self.call(storage:)

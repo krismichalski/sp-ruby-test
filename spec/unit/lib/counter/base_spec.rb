@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "counter/base"
 
 RSpec.describe Counter::Base do
@@ -5,9 +7,9 @@ RSpec.describe Counter::Base do
 
   let(:storage) do
     {
-      a: %w(1 2 3),
-      b: %w(1 2 3 4),
-      c: %w(1),
+      a: %w[1 2 3],
+      b: %w[1 2 3 4],
+      c: %w[1],
     }
   end
 

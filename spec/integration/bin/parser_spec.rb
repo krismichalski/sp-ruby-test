@@ -1,7 +1,10 @@
-require_relative '../../../bin/parser'
+# frozen_string_literal: true
+
+require_relative "../../../bin/parser"
 
 RSpec.describe "bin/parser" do
   subject { run(input_path: input_path, mode: mode) }
+
   let(:input_path) { "webserver.log" }
 
   describe "#run" do
@@ -10,7 +13,7 @@ RSpec.describe "bin/parser" do
 
       it "prints out sorted visits" do
         expect { subject }.to output(
-          <<~TEXT
+          <<~TEXT,
             /about/2 90 visits
             /contact 89 visits
             /index 82 visits
@@ -27,7 +30,7 @@ RSpec.describe "bin/parser" do
 
       it "prints out sorted visits" do
         expect { subject }.to output(
-          <<~TEXT
+          <<~TEXT,
             /help_page/1 23 unique views
             /contact 23 unique views
             /home 23 unique views

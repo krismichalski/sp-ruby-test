@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sorter
   class Descending
     def self.call(storage:)

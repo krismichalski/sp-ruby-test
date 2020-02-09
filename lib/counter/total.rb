@@ -1,4 +1,6 @@
-require_relative 'base'
+# frozen_string_literal: true
+
+require_relative "base"
 
 module Counter
   class Total < Base

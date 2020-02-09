@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "formatter/unique"
 
 RSpec.describe Formatter::Unique do
@@ -17,8 +19,8 @@ RSpec.describe Formatter::Unique do
         [
           "/path/2 9 unique views",
           "/path/1 6 unique views",
-          "/path/3 1 unique views"
-        ]
+          "/path/3 1 unique views",
+        ],
       )
     end
   end

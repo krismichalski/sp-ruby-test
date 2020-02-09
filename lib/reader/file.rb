@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reader
   class File
     def self.call(input_path:)

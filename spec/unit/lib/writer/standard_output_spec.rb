@@ -1,4 +1,6 @@
-require 'writer/standard_output'
+# frozen_string_literal: true
+
+require "writer/standard_output"
 
 RSpec.describe Writer::StandardOutput do
   subject { described_class.call(storage: storage) }
@@ -7,14 +9,14 @@ RSpec.describe Writer::StandardOutput do
     [
       "first line",
       "second line",
-      "third line"
+      "third line",
     ]
   end
 
   describe "#call" do
     it "writes the storage to standard output" do
       expect { subject }.to output(
-        <<~TEXT
+        <<~TEXT,
           first line
           second line
           third line

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "smart_pension_ruby_test"
 
 RSpec.describe SmartPensionRubyTest do
@@ -36,7 +38,7 @@ RSpec.describe SmartPensionRubyTest do
       subject
     end
   end
-  
+
   describe "#call" do
     subject { smart_pension_ruby_test.call }
 
@@ -58,7 +60,7 @@ RSpec.describe SmartPensionRubyTest do
 
     context "with empty input path" do
       let(:input_path) { nil }
-      
+
       it "raises proper error" do
         expect { subject }.to raise_error("Path to input not provided!")
       end

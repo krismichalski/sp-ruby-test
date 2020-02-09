@@ -2,19 +2,19 @@
 
 # frozen_string_literal: true
 
-require_relative '../lib/smart_pension_ruby_test'
-require 'optparse'
-require 'ostruct'
+require_relative "../lib/smart_pension_ruby_test"
+require "optparse"
+require "ostruct"
 
 MODES = {
   total: {
     counter: Counter::Total,
-    formatter: Formatter::Total
+    formatter: Formatter::Total,
   },
   unique: {
     counter: Counter::Unique,
-    formatter: Formatter::Unique
-  }
+    formatter: Formatter::Unique,
+  },
 }.freeze
 
 options = OpenStruct.new
@@ -49,6 +49,4 @@ def run(input_path:, mode:)
 end
 
 # If run in shell and not in RSpec
-if $0 == __FILE__
-  run(input_path: ARGV[0], mode: options[:mode])
-end
+run(input_path: ARGV[0], mode: options[:mode]) if $PROGRAM_NAME == __FILE__
