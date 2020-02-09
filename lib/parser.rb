@@ -14,6 +14,7 @@ class Parser
 
   def call
     fetch_visits.
+      then { |visits| parse_visits(visits: visits) }.
       then { |visits| count_visits(visits: visits) }.
       then { |visits| sort_visits(visits: visits) }.
       then { |visits| display_visits(visits: visits) }
@@ -22,11 +23,14 @@ class Parser
   private
 
   def fetch_visits
-    visits = Hash.new { [] }
-    lines = FileReader.new(file_path: @file_path).call
-    SimpleLogParser.new(log_lines: lines, storage: visits).call
+    FileReader.new(file_path: @file_path).call
+  end
 
-    visits
+  def parse_visits(visits:)
+    storage = Hash.new { [] }
+    SimpleLogParser.new(log_lines: visits, storage: storage).call
+
+    storage
   end
 
   def count_visits(visits:)
