@@ -30,12 +30,12 @@ RSpec.describe Parser do
       it "prints out sorted visits" do
         expect { subject }.to output(
           <<~TEXT
-            /help_page/1 23 visits
-            /contact 23 visits
-            /home 23 visits
-            /index 23 visits
-            /about/2 22 visits
-            /about 21 visits
+            /help_page/1 23 unique views
+            /contact 23 unique views
+            /home 23 unique views
+            /index 23 unique views
+            /about/2 22 unique views
+            /about 21 unique views
           TEXT
         ).to_stdout
       end

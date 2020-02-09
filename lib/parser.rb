@@ -2,14 +2,18 @@ require_relative 'file_reader'
 require_relative 'simple_log_parser'
 require_relative 'counter/total'
 require_relative 'counter/unique'
+require_relative 'formatter/total'
+require_relative 'formatter/unique'
 
 class Parser
   MODES = {
     total: {
-      counter: Counter::Total
+      counter: Counter::Total,
+      formatter: Formatter::Total
     },
     unique: {
-      counter: Counter::Unique
+      counter: Counter::Unique,
+      formatter: Formatter::Unique
     }
   }.freeze
 
@@ -48,7 +52,7 @@ class Parser
 
   def display_visits(visits:)
     visits.each do |path, view_count|
-      puts "#{path} #{view_count} visits"
+      puts MODES[@mode][:formatter].new(path: path, number_of_visits: view_count).format
     end
   end
 end
