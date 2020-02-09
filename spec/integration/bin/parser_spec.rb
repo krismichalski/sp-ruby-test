@@ -1,8 +1,8 @@
 require_relative '../../../bin/parser'
 
 RSpec.describe "bin/parser" do
-  subject { run(file_path: file_path, mode: mode) }
-  let(:file_path) { "webserver.log" }
+  subject { run(input_path: input_path, mode: mode) }
+  let(:input_path) { "webserver.log" }
 
   describe "#run" do
     context "sort by total hits" do

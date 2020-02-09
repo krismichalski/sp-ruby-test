@@ -1,9 +1,11 @@
-require_relative "base"
+require_relative 'base'
 
 module Formatter
   class Unique < Base
-    def format
-      "#{@path} #{@number_of_visits} unique views"
+    private
+
+    def format(path:, view_count:)
+      "#{path} #{view_count} unique views"
     end
   end
 end

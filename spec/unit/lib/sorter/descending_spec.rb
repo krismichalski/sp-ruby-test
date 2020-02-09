@@ -1,22 +1,22 @@
-require "counter/unique"
+require "sorter/descending"
 
-RSpec.describe Counter::Unique do
+RSpec.describe Sorter::Descending do
   subject { described_class.call(storage: storage) }
 
   let(:storage) do
     {
-      a: %w(1 1 2 3),
-      b: %w(1 2 3 3 4 4),
-      c: %w(1),
+      a: 6,
+      b: 9,
+      c: 1,
     }
   end
 
   describe "#call" do
-    it "counts unique entries in each key" do
+    it "sorts storage based on values (descending)" do
       expect(subject).to eq(
         {
-          a: 3,
-          b: 4,
+          b: 9,
+          a: 6,
           c: 1,
         }
       )

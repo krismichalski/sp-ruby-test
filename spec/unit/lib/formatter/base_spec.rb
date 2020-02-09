@@ -1,14 +1,17 @@
 require "formatter/base"
 
 RSpec.describe Formatter::Base do
-  let(:base_formatter) { described_class.new(path: path, number_of_visits: number_of_visits) }
+  subject { described_class.call(storage: storage) }
 
-  let(:path) { "/path/1" }
-  let(:number_of_visits) { 44 }
+  let(:storage) do
+    {
+      "/path/2" => 9,
+      "/path/1" => 6,
+      "/path/3" => 1,
+    }
+  end
 
-  describe "#format" do
-    subject { base_formatter.format }
-
+  describe "#call" do
     it "raises NotImplementedError" do
       expect { subject }.to raise_error(NotImplementedError)
     end

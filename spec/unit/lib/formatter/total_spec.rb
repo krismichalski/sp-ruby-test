@@ -1,14 +1,25 @@
 require "formatter/total"
 
 RSpec.describe Formatter::Total do
-  let(:total_formatter) { described_class.new(path: path, number_of_visits: number_of_visits) }
+  subject { described_class.call(storage: storage) }
 
-  let(:path) { "/path/1" }
-  let(:number_of_visits) { 44 }
+  let(:storage) do
+    {
+      "/path/2" => 9,
+      "/path/1" => 6,
+      "/path/3" => 1,
+    }
+  end
 
-  describe "#format" do
-    subject { total_formatter.format }
-
-    it { is_expected.to eq("/path/1 44 visits") }
+  describe "#call" do
+    it "correctly formats the storage" do
+      expect(subject).to eq(
+        [
+          "/path/2 9 visits",
+          "/path/1 6 visits",
+          "/path/3 1 visits"
+        ]
+      )
+    end
   end
 end

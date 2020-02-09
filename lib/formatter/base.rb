@@ -1,11 +1,18 @@
 module Formatter
   class Base
-    def initialize(path:, number_of_visits:)
-      @path = path
-      @number_of_visits = number_of_visits
+    def self.call(storage:)
+      new.call(storage: storage)
     end
 
-    def format
+    def call(storage:)
+      storage.map do |path, view_count|
+        format(path: path, view_count: view_count)
+      end
+    end
+
+    private
+
+    def format(path:, view_count:)
       raise NotImplementedError
     end
   end

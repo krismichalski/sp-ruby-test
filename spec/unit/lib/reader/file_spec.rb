@@ -1,8 +1,8 @@
-require "file_reader"
+require "reader/file"
 require "tempfile"
 
-RSpec.describe FileReader do
-  let(:file_reader) { described_class.new(file_path: file_path) }
+RSpec.describe Reader::File do
+  subject { described_class.call(input_path: input_path) }
 
   let(:tempfile) do
     Tempfile.new("webserver_log").tap do |file|
@@ -29,10 +29,8 @@ RSpec.describe FileReader do
   end
 
   describe "#call" do
-    subject { file_reader.call }
-
     context "when file can be found" do
-      let(:file_path) { tempfile.path }
+      let(:input_path) { tempfile.path }
 
       it "returns the array containing all lines from file" do
         expect(subject).to eq(lines)
@@ -40,7 +38,7 @@ RSpec.describe FileReader do
     end
 
     context "when file can't be found" do
-      let(:file_path) { "some/invalid/path" }
+      let(:input_path) { "some/invalid/path" }
 
       it "raises an error" do
         expect { subject }.to raise_error("Couldn't find file in the given path: some/invalid/path")

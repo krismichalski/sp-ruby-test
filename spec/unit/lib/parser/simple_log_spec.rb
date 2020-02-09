@@ -1,8 +1,9 @@
-require "simple_log_parser"
+require "parser/simple_log"
 
-RSpec.describe SimpleLogParser do
-  let(:simple_log_parser) { described_class.new(log_lines: log_lines) }
-  let(:log_lines) do
+RSpec.describe Parser::SimpleLog do
+  subject { described_class.call(lines: lines) }
+
+  let(:lines) do
     [
       "/help_page/1 8.8.8.8",
       "/help_page/1 8.8.8.8",
@@ -17,8 +18,6 @@ RSpec.describe SimpleLogParser do
   end
 
   describe "#call" do
-    subject { simple_log_parser.call }
-
     it "returns a Hash with path as keys and array of ips as values" do
       expect(subject).to eq(
         {

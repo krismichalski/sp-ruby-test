@@ -1,15 +1,17 @@
 require "counter/base"
 
 RSpec.describe Counter::Base do
-  let(:counter_base) { described_class.new(ips_array: ips_array) }
+  subject { described_class.call(storage: storage) }
 
-  let(:ips_array) do
-    %w(8.8.8.8 8.8.8.8 4.4.4.4 2.2.2.2 2.2.2.2)
+  let(:storage) do
+    {
+      a: %w(1 2 3),
+      b: %w(1 2 3 4),
+      c: %w(1),
+    }
   end
 
-  describe "#count" do
-    subject { counter_base.count }
-
+  describe "#call" do
     it "raises NotImplementedError" do
       expect { subject }.to raise_error(NotImplementedError)
     end

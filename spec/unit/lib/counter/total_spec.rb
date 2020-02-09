@@ -1,15 +1,25 @@
 require "counter/total"
 
 RSpec.describe Counter::Total do
-  let(:total_counter) { described_class.new(ips_array: ips_array) }
+  subject { described_class.call(storage: storage) }
 
-  let(:ips_array) do
-    %w(8.8.8.8 8.8.8.8 4.4.4.4 2.2.2.2 2.2.2.2)
+  let(:storage) do
+    {
+      a: %w(1 2 3),
+      b: %w(1 2 3 4),
+      c: %w(1),
+    }
   end
 
-  describe "#count" do
-    subject { total_counter.count }
-
-    it { is_expected.to eq(5) }
+  describe "#call" do
+    it "counts total entries in each key" do
+      expect(subject).to eq(
+        {
+          a: 3,
+          b: 4,
+          c: 1,
+        }
+      )
+    end
   end
 end
