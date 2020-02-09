@@ -1,4 +1,5 @@
 require_relative 'file_reader'
+require_relative 'simple_log_parser'
 
 class Parser
   MODES = {
@@ -23,11 +24,7 @@ class Parser
   def fetch_visits
     visits = Hash.new { [] }
     lines = FileReader.new(file_path: @file_path).call
-
-    lines.each do |line|
-      path, ip = line.split(" ")
-      visits[path] <<= ip
-    end
+    SimpleLogParser.new(log_lines: lines, storage: visits).call
 
     visits
   end
