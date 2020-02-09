@@ -6,15 +6,17 @@ require_relative '../lib/parser'
 require 'optparse'
 require 'ostruct'
 
+MODES = Parser::MODES.keys
+
 options = OpenStruct.new
-options.mode = :total
+options.mode = MODES.first
 
 OptionParser.new do |opts|
   opts.banner = "Usage: parser.rb <path to file> [options]"
   opts.separator ""
   opts.separator "Specific options:"
 
-  opts.on("--mode [MODE]", [:total, :unique], "Select mode: 'total' (default) or 'unique'") do |mode|
+  opts.on("--mode [MODE]", MODES, "Select mode: #{MODES.join('/')}") do |mode|
     options.mode = mode
   end
 
