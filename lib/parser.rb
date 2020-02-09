@@ -1,3 +1,5 @@
+require_relative 'file_reader'
+
 class Parser
   MODES = {
     total: ->(array) { array.size },
@@ -20,8 +22,9 @@ class Parser
 
   def fetch_visits
     visits = Hash.new { [] }
+    lines = FileReader.new(file_path: @file_path).call
 
-    File.foreach(@file_path) do |line|
+    lines.each do |line|
       path, ip = line.split(" ")
       visits[path] <<= ip
     end
