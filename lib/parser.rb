@@ -27,10 +27,7 @@ class Parser
   end
 
   def parse_visits(visits:)
-    storage = Hash.new { [] }
-    SimpleLogParser.new(log_lines: visits, storage: storage).call
-
-    storage
+    SimpleLogParser.new(log_lines: visits).call
   end
 
   def count_visits(visits:)

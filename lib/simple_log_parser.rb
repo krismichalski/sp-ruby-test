@@ -1,7 +1,7 @@
 class SimpleLogParser
-  def initialize(log_lines:, storage:)
+  def initialize(log_lines:)
     @log_lines = log_lines
-    @storage = storage
+    @storage = Hash.new { [] }
   end
 
   def call
@@ -9,5 +9,7 @@ class SimpleLogParser
       path, ip = line.split(" ")
       @storage[path] <<= ip
     end
+
+    @storage
   end
 end
