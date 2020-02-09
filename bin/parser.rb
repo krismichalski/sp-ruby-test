@@ -29,4 +29,11 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-Parser.new(file_path: ARGV[0], mode: options[:mode]).call
+def run(file_path:, mode:)
+  Parser.new(file_path: file_path, mode: mode).call
+end
+
+# If run in shell and not in RSpec
+if $0 == __FILE__
+  run(file_path: ARGV[0], mode: options[:mode])
+end

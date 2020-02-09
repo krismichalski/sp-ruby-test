@@ -1,12 +1,10 @@
-require 'parser'
+require_relative '../../../bin/parser'
 
-RSpec.describe Parser do
-  let(:parser) { described_class.new(file_path: file_path, mode: mode) }
+RSpec.describe "bin/parser" do
+  subject { run(file_path: file_path, mode: mode) }
   let(:file_path) { "webserver.log" }
 
-  describe "#call" do
-    subject { parser.call }
-
+  describe "#run" do
     context "sort by total hits" do
       let(:mode) { :total }
 
@@ -40,6 +38,5 @@ RSpec.describe Parser do
         ).to_stdout
       end
     end
-
   end
 end
