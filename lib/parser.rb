@@ -1,10 +1,16 @@
 require_relative 'file_reader'
 require_relative 'simple_log_parser'
+require_relative 'counter/total'
+require_relative 'counter/unique'
 
 class Parser
   MODES = {
-    total: ->(array) { array.size },
-    unique: ->(array) { array.uniq.size }
+    total: {
+      counter: Counter::Total
+    },
+    unique: {
+      counter: Counter::Unique
+    }
   }.freeze
 
   def initialize(file_path:, mode:)
@@ -32,7 +38,7 @@ class Parser
 
   def count_visits(visits:)
     visits.map do |path, ips_array|
-      [path, MODES[@mode].call(ips_array)]
+      [path, MODES[@mode][:counter].new(ips_array: ips_array).count]
     end
   end
 
