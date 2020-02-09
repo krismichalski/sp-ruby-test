@@ -1,9 +1,7 @@
-module Counter
-  class Unique
-    def initialize(ips_array:)
-      @ips_array = ips_array
-    end
+require_relative 'base'
 
+module Counter
+  class Unique < Base
     def count
       @ips_array.uniq.size
     end

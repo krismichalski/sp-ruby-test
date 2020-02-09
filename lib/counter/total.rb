@@ -1,9 +1,7 @@
-module Counter
-  class Total
-    def initialize(ips_array:)
-      @ips_array = ips_array
-    end
+require_relative 'base'
 
+module Counter
+  class Total < Base
     def count
       @ips_array.size
     end
