@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+
+# path to your application root.
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+# Cross-platform way of finding an executable in the $PATH.
+# Works properly on Windows too.
+# https://stackoverflow.com/a/5471032
+def which(cmd)
+  exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+  ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+    exts.each { |ext|
+      exe = File.join(path, "#{cmd}#{ext}")
+      return exe if File.executable?(exe) && !File.directory?(exe)
+    }
+  end
+  return nil
+end
+
+abort("== Install docker and docker-compose first! ==") if which('docker').nil? || which('docker-compose').nil?
+
+FileUtils.chdir APP_ROOT do
+  # This script is a way to setup or update your development environment automatically.
+  # This script is idempotent, so that you can run it at anytime and get an expectable outcome.
+  # Add necessary setup steps to this file.
+
+  p "== Setup initiated =="
+
+  puts "\n== Building app image =="
+  system!("docker-compose build")
+
+  puts "\n== Installing dependencies =="
+  system!("docker-compose run --no-deps --rm app bundle install")
+
+  puts "\n== Stopping temporary containers =="
+  system!("docker-compose stop")
+
+  puts "\n== Setup finished sucessfully =="
+end

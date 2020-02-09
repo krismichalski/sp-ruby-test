@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# bin/dc (docker-compose) script helper for running commands inside docker
+
+require "fileutils"
+
+# path to your application root.
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+def extract_envs_and_command(argv)
+  first_non_env_index = argv.find_index { |arg| !arg.include?('=') }
+
+  # for some reason ruby will strip the quotes in arguments
+  # so we restore them if the env value contains a space
+  # e.g. running dc COMMENT="my dev token" rake token:generate
+  # would be represented in ARGV as ["COMMENT=my dev token", "rake", "token:generate"]
+  # notice the missing quotes surrounding the "my dev token" string
+  envs = argv[0...first_non_env_index].map do |env|
+    key, value = env.split('=')
+    value = "'#{value}'" if value.include?(" ")
+    "-e #{key}=#{value}"
+  end
+
+  command = argv[first_non_env_index..-1]
+
+  [envs.join(" "), command.join(" ")]
+end
+
+FileUtils.chdir APP_ROOT do
+  if ARGV[0].to_s == ""
+    system!("docker-compose run --rm app ash")
+  else
+    envs, command = extract_envs_and_command(ARGV)
+    system!("docker-compose run --rm #{envs} app #{command}")
+  end
+end

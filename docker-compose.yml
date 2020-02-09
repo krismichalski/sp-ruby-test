@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  app:
+    image: "sp-ruby-test_app:${TAG:-latest}"
+    build:
+      context: "."
+      dockerfile: "docker/Dockerfile"
+      args:
+        - "DOCKER_USER_GID=${DOCKER_USER_GID:-9001}"
+        - "DOCKER_USER_UID=${DOCKER_USER_UID:-9001}"
+        - "DEV_ENV=${DEV_ENV:-true}"
+        - "BUNDLE_WITHOUT=${BUNDLE_WITHOUT:-}" # by default install all the gems
+        - "FINAL_BASE=${FINAL_BASE:-builder}" # by default leave all the build dependencies installed
+    volumes:
+      - ".:/home/docker/app" # APP_ROOT env from Dockerfile
+      - "bundler:/home/docker/bundle" # GEM_HOME env from Dockerfile
+    tty: true
+    stdin_open: true
+    init: true
+
+volumes:
+  bundler: {}
