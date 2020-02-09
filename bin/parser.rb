@@ -29,5 +29,4 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-puts "#{options[:mode].to_s.upcase}:"
 Parser.new(file_path: ARGV[0], mode: options[:mode]).call
