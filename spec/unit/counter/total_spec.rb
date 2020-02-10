@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "counter/total"
-
 RSpec.describe Counter::Total do
   subject { described_class.call(storage: storage) }
 

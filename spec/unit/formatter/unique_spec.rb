@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "formatter/unique"
-
 RSpec.describe Formatter::Unique do
   subject { described_class.call(storage: storage) }
 

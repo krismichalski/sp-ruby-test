@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "writer/standard_output"
-
 RSpec.describe Writer::StandardOutput do
   subject { described_class.call(storage: storage) }
 

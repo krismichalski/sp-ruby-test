@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "counter/base"
-
 RSpec.describe Counter::Base do
   subject { described_class.call(storage: storage) }
 

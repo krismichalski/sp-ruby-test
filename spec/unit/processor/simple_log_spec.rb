@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "processor/simple_log"
-
 RSpec.describe Processor::SimpleLog do
   subject { described_class.call(lines: lines) }
 

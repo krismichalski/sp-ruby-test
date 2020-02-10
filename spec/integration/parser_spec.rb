@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "parser"
-
 RSpec.describe Parser do
   subject { described_class.run(input_path: input_path, mode: mode) }
 

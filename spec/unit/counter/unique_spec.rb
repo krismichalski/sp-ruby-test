@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "counter/unique"
-
 RSpec.describe Counter::Unique do
   subject { described_class.call(storage: storage) }
 

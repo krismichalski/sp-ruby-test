@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "sorter/descending"
-
 RSpec.describe Sorter::Descending do
   subject { described_class.call(storage: storage) }
 

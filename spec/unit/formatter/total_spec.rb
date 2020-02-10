@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "formatter/total"
-
 RSpec.describe Formatter::Total do
   subject { described_class.call(storage: storage) }
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "formatter/base"
-
 RSpec.describe Formatter::Base do
   subject { described_class.call(storage: storage) }
 

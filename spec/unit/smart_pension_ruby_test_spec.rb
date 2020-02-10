@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "smart_pension_ruby_test"
-
 RSpec.describe SmartPensionRubyTest do
   let(:smart_pension_ruby_test) do
     described_class.new(
