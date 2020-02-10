@@ -1,0 +1,174 @@
+version: 2.1
+
+executors:
+  ruby_machine:
+    docker:
+      - image: circleci/ruby:2.6.5-node
+        environment:
+            GEM_HOME: vendor/.bundle
+            BUNDLE_PATH: vendor/.bundle
+            BUNDLE_JOBS: 2
+            BUNDLE_RETRY: 3
+
+commands:
+  persist_test_coverage:
+    steps:
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - coverage_results
+
+  store_test_and_artifacts:
+    parameters:
+        path:
+          type: string
+    steps:
+      - store_test_results:
+          path: "<< parameters.path >>"
+      - store_artifacts:
+          path: "<< parameters.path >>"
+
+jobs:
+  checkout_code:
+    executor: ruby_machine
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  install_cc_test_reporter:
+    executor: ruby_machine
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Download CC test reporter
+          command: |
+            mkdir -p ./tmp
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+            mkdir -p coverage_results
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - tmp
+            - coverage_results
+
+  install_ruby_dependencies:
+    executor: ruby_machine
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - gem-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v1-{{ .Branch }}-
+            - gem-cache-v1-
+      - run:
+          name: Install bundler 2.1.4
+          command: gem install bundler:2.1.4
+      - run:
+          name: Bundle check
+          command: bundle check || bundle install --clean
+      - save_cache:
+          key: gem-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/.bundle
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - vendor/.bundle
+
+  run_brakeman:
+    executor: ruby_machine
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Brakeman
+          command: bundle exec brakeman
+
+  run_rubocop:
+    executor: ruby_machine
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+
+  run_bundle_audit:
+    executor: ruby_machine
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Bundle Audit
+          command: bundle exec bundle-audit check --update
+
+  run_tests:
+    executor: ruby_machine
+    resource_class: small
+    parallelism: 2 # remember to also change -p <INT> in sum-coverage command
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Run Tests
+          command: |
+            ./tmp/cc-test-reporter before-build
+            bundle exec rspec $(circleci tests glob "spec/**/**/*_spec.rb" | circleci tests split --split-by=timings) \
+                              --format progress \
+                              --format RspecJunitFormatter \
+                              --out unit_test_results/rspec.xml
+            ./tmp/cc-test-reporter format-coverage -t simplecov -o coverage_results/codeclimate.unit_$(echo $CIRCLE_NODE_INDEX).json coverage_results/coverage/.resultset.json
+      - store_test_and_artifacts:
+          path: "unit_test_results"
+      - persist_test_coverage
+
+  report_test_coverage:
+    executor: ruby_machine
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage coverage_results/codeclimate.*.json -p 2 -o coverage_results/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i coverage_results/codeclimate.total.json
+
+workflows:
+  version: 2
+  build_test:
+    jobs:
+      - checkout_code
+
+      - install_cc_test_reporter:
+          requires:
+            - checkout_code
+
+      - install_ruby_dependencies:
+          requires:
+            - checkout_code
+
+      - run_rubocop:
+          requires:
+            - install_ruby_dependencies
+
+      - run_bundle_audit:
+          requires:
+            - install_ruby_dependencies
+
+      - run_tests:
+          requires:
+            - install_ruby_dependencies
+            - install_cc_test_reporter
+
+      - report_test_coverage:
+          requires:
+            - run_tests
