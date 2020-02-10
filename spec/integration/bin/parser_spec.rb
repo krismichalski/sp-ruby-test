@@ -5,7 +5,31 @@ require_relative "../../../bin/parser"
 RSpec.describe "bin/parser" do
   subject { run(input_path: input_path, mode: mode) }
 
-  let(:input_path) { "webserver.log" }
+  let(:input_path) { tempfile.path }
+
+  let(:tempfile) do
+    Tempfile.new("webserver_log").tap do |file|
+      lines.each do |line|
+        file << line + "\n"
+      end
+
+      file.close
+    end
+  end
+
+  let(:lines) do
+    [
+      "/help_page/1 8.8.8.8",
+      "/help_page/1 8.8.8.8",
+      "/help_page/1 4.4.4.4",
+      "/help_page/1 4.4.4.4",
+      "/home 8.8.8.8",
+      "/home 4.4.4.4",
+      "/home 2.2.2.2",
+      "/contact 8.8.8.8",
+      "/index 2.2.2.2",
+    ]
+  end
 
   describe "#run" do
     context "sort by total hits" do
@@ -14,12 +38,10 @@ RSpec.describe "bin/parser" do
       it "prints out sorted visits" do
         expect { subject }.to output(
           <<~TEXT,
-            /about/2 90 visits
-            /contact 89 visits
-            /index 82 visits
-            /about 81 visits
-            /help_page/1 80 visits
-            /home 78 visits
+            /help_page/1 4 visits
+            /home 3 visits
+            /contact 1 visits
+            /index 1 visits
           TEXT
         ).to_stdout
       end
@@ -31,12 +53,10 @@ RSpec.describe "bin/parser" do
       it "prints out sorted visits" do
         expect { subject }.to output(
           <<~TEXT,
-            /help_page/1 23 unique views
-            /contact 23 unique views
-            /home 23 unique views
-            /index 23 unique views
-            /about/2 22 unique views
-            /about 21 unique views
+            /home 3 unique views
+            /help_page/1 2 unique views
+            /contact 1 unique views
+            /index 1 unique views
           TEXT
         ).to_stdout
       end
