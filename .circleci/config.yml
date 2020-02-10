@@ -5,8 +5,8 @@ executors:
     docker:
       - image: circleci/ruby:2.6.5-node
         environment:
-            GEM_HOME: vendor/.bundle
-            BUNDLE_PATH: vendor/.bundle
+            GEM_HOME: vendor/bundle
+            BUNDLE_PATH: vendor/bundle
             BUNDLE_JOBS: 2
             BUNDLE_RETRY: 3
 
@@ -75,11 +75,11 @@ jobs:
       - save_cache:
           key: gem-cache-v1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/.bundle
+            - vendor/bundle
       - persist_to_workspace:
           root: ~/project
           paths:
-            - vendor/.bundle
+            - vendor/bundle
 
   run_brakeman:
     executor: ruby_machine
