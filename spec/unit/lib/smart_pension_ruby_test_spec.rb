@@ -7,7 +7,7 @@ RSpec.describe SmartPensionRubyTest do
     described_class.new(
       input_path: input_path,
       input_reader: input_reader,
-      parser: parser,
+      processor: processor,
       counter: counter,
       sorter: sorter,
       formatter: formatter,
@@ -17,7 +17,7 @@ RSpec.describe SmartPensionRubyTest do
 
   let(:input_path) { "some_file_path" }
   let(:input_reader) { Reader::File }
-  let(:parser) { Parser::SimpleLog }
+  let(:processor) { Processor::SimpleLog }
   let(:counter) { Counter::Total }
   let(:sorter) { Sorter::Descending }
   let(:formatter) { Formatter::Total }
@@ -29,7 +29,7 @@ RSpec.describe SmartPensionRubyTest do
   shared_examples "correctly calls all services" do
     it "correctly calls all services in order" do
       expect(input_reader).to receive(:call).with(input_path: input_path).once.and_return(log_lines).ordered
-      expect(parser).to receive(:call).with(lines: log_lines).once.and_return(storage).ordered
+      expect(processor).to receive(:call).with(lines: log_lines).once.and_return(storage).ordered
       expect(counter).to receive(:call).with(storage: storage).once.and_return(storage).ordered
       expect(sorter).to receive(:call).with(storage: storage).once.and_return(storage).ordered
       expect(formatter).to receive(:call).with(storage: storage).once.and_return(storage).ordered

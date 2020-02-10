@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "parser/simple_log"
+require "processor/simple_log"
 
-RSpec.describe Parser::SimpleLog do
+RSpec.describe Processor::SimpleLog do
   subject { described_class.call(lines: lines) }
 
   let(:lines) do

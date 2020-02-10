@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "reader/file"
-require_relative "parser/simple_log"
+require_relative "processor/simple_log"
 require_relative "counter/base"
 require_relative "counter/total"
 require_relative "counter/unique"
@@ -12,10 +12,10 @@ require_relative "formatter/unique"
 require_relative "writer/standard_output"
 
 class SmartPensionRubyTest
-  def initialize(input_path:, input_reader: nil, parser: nil, counter: nil, sorter: nil, formatter: nil, writer: nil)
+  def initialize(input_path:, input_reader: nil, processor: nil, counter: nil, sorter: nil, formatter: nil, writer: nil)
     @input_path = input_path || raise("Path to input not provided!")
     @input_reader = input_reader || Reader::File
-    @parser = parser || Parser::SimpleLog
+    @processor = processor || Processor::SimpleLog
     @counter = counter || Counter::Total
     @sorter = sorter || Sorter::Descending
     @formatter = formatter || Formatter::Total
@@ -24,7 +24,7 @@ class SmartPensionRubyTest
 
   def call
     read
-      .then { |lines| parse_and_store(lines: lines) }
+      .then { |lines| process_and_store(lines: lines) }
       .then { |storage| count(storage: storage) }
       .then { |storage| sort(storage: storage) }
       .then { |storage| format(storage: storage) }
@@ -37,8 +37,8 @@ class SmartPensionRubyTest
     @input_reader.call(input_path: @input_path)
   end
 
-  def parse_and_store(lines:)
-    @parser.call(lines: lines)
+  def process_and_store(lines:)
+    @processor.call(lines: lines)
   end
 
   def count(storage:)
