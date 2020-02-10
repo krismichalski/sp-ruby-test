@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "../../../bin/parser"
+require "parser"
 
-RSpec.describe "bin/parser" do
-  subject { run(input_path: input_path, mode: mode) }
+RSpec.describe Parser do
+  subject { described_class.run(input_path: input_path, mode: mode) }
 
   let(:input_path) { tempfile.path }
 
