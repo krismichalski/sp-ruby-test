@@ -13,7 +13,7 @@ def system!(*args)
 end
 
 def extract_envs_and_command(argv)
-  first_non_env_index = argv.find_index { |arg| !arg.include?('=') }
+  first_non_env_index = argv.find_index { |arg| !arg.include?("=") }
 
   # for some reason ruby will strip the quotes in arguments
   # so we restore them if the env value contains a space
@@ -21,7 +21,7 @@ def extract_envs_and_command(argv)
   # would be represented in ARGV as ["COMMENT=my dev token", "rake", "token:generate"]
   # notice the missing quotes surrounding the "my dev token" string
   envs = argv[0...first_non_env_index].map do |env|
-    key, value = env.split('=')
+    key, value = env.split("=")
     value = "'#{value}'" if value.include?(" ")
     "-e #{key}=#{value}"
   end
