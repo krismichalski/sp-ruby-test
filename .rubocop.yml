@@ -1,0 +1,71 @@
+require:
+  - rubocop-performance
+
+AllCops:
+  Include:
+    - '**/*.rb'
+    - '**/Gemfile'
+  TargetRubyVersion: 2.6
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Layout/SpaceAroundOperators:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle:
+    - key
+    - table
+  EnforcedColonStyle:
+    - key
+    - table
+
+Layout/AccessModifierIndentation:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - lib/counter/base.rb
+    - lib/formatter/base.rb
+    - lib/counter/base.rb
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - lib/smart_pension_ruby_test.rb
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - lib/smart_pension_ruby_test.rb
+
+Metrics/ParameterLists:
+  Exclude:
+    - lib/smart_pension_ruby_test.rb
