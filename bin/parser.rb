@@ -27,5 +27,4 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-# If run in shell and not in RSpec
-Parser.run(input_path: ARGV[0], mode: options[:mode]) if $PROGRAM_NAME == __FILE__
+Parser.run(input_path: ARGV[0], mode: options[:mode])
