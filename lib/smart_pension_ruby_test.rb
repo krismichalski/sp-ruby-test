@@ -1,16 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "reader/file"
-require_relative "processor/simple_log"
-require_relative "counter/base"
-require_relative "counter/total"
-require_relative "counter/unique"
-require_relative "sorter/descending"
-require_relative "formatter/base"
-require_relative "formatter/total"
-require_relative "formatter/unique"
-require_relative "writer/standard_output"
-
 class SmartPensionRubyTest
   def initialize(input_path:, input_reader: nil, processor: nil, counter: nil, sorter: nil, formatter: nil, writer: nil)
     @input_path = input_path || raise("Path to input not provided!")
